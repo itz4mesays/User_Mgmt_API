@@ -9,8 +9,9 @@ const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
 const mongo_connection_1 = require("./connection/mongo_connection");
+const index_1 = __importDefault(require("./routes/index"));
 const app = (0, express_1.default)();
-(0, mongo_connection_1.connectToDatabase)();
+(0, mongo_connection_1.connectToDatabase)(); //connect to mongodb
 // Middleware
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json());
@@ -25,6 +26,7 @@ app.get('/', (req, res) => {
         message: "This is my backend for user management using TypeScript"
     });
 });
+app.use('/api/v1', index_1.default);
 // Start the server
 app.listen(port, () => {
     console.log(`My User Management App with TypeScript is up and running on PORT ${port}`);

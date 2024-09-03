@@ -1,30 +1,33 @@
-import { MongoClient, Db } from 'mongodb';
+import dotenv from 'dotenv'
+dotenv.config()
+import mongoose from 'mongoose';
 
 // Use your provided MongoDB connection URI
-const uri : string | undefined = process.env.MONGO_URL
+const uri: string | undefined = process.env.MONGO_URL;
 
 if (!uri) {
     throw new Error("MONGO_URL is not defined in the environment variables.");
 }
 
-// Create an instance of MongoClient
-const client = new MongoClient(uri);
-
-// Function to connect to the database
+// Function to connect to the database using Mongoose
 export async function connectToDatabase() {
     try {
-        await client.connect();
-        console.log('Connected successfully to MongoDB');
-        const db = client.db('user_mgmt');
-        return db;
+        //The uri! syntax is a non-null assertion that tells TypeScript to treat uri as a non-null and non-undefined value
+        await mongoose.connect(uri!)
+        console.log('Connected successfully to MongoDB using Mongoose');
     } catch (error) {
-        console.error('Failed to connect to MongoDB:', error);
+        console.error('Failed to connect to MongoDB using Mongoose:', error);
         throw error;
     }
 }
 
-// Function to close the MongoDB connection
+// Function to close the Mongoose connection
 export async function closeConnection() {
-    await client.close();
-    console.log('MongoDB connection closed');
+    try {
+        await mongoose.connection.close();
+        console.log('MongoDB connection closed using Mongoose');
+    } catch (error) {
+        console.error('Failed to close MongoDB connection using Mongoose:', error);
+        throw error;
+    }
 }

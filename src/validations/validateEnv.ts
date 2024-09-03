@@ -3,7 +3,7 @@ dotenv.config()
 import Joi from 'joi'
 
 // Define the schema for validation
-const envSchema = Joi.object({
+const envSchema  : Joi.ObjectSchema = Joi.object({
     APP_PORT: Joi.number().required(),
     MONGO_URL: Joi.string().required(),
 })

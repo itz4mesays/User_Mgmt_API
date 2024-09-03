@@ -10,23 +10,42 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const util_1 = require("../utils/util");
+const form_validations_1 = require("../validations/form_validations");
 class UserController {
     constructor() { }
     createUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                const { error } = form_validations_1.validateUser.validate(req.body, { abortEarly: false });
+                if (error) {
+                    return (0, util_1.handleError)(res, 422, error.details[0].message);
+                    // return handleError(res, 422, error.details.map(detail => detail.message).join(', '));
+                }
+                return (0, util_1.successResponse)(res, 201, {}, "User details have been created");
             }
             catch (error) {
-                (0, util_1.handleError)(res, 500, error);
+                return (0, util_1.handleError)(res, 500, error);
             }
         });
     }
     getUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return (0, util_1.successResponse)(res, 200, {}, "Success");
+            }
+            catch (error) {
+                return (0, util_1.handleError)(res, 500, error);
+            }
         });
     }
     getAllUsers(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return (0, util_1.successResponse)(res, 200, {}, "Success");
+            }
+            catch (error) {
+                return (0, util_1.handleError)(res, 500, error);
+            }
         });
     }
 }

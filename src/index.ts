@@ -5,10 +5,11 @@ import morgan from 'morgan'
 import cors from 'cors'
 import envVars from './validations/validateEnv'
 import { connectToDatabase } from './connection/mongo_connection'
+import userRoute from './routes/index'
 
 const app = express();
 
-connectToDatabase()
+connectToDatabase() //connect to mongodb
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -20,12 +21,14 @@ app.use(morgan('combined')); // Fix the typo: "combinged" to "combined"
 const port: number | string = process.env.APP_PORT || 1021;
 
 // Define a basic route
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (req: Request, res: Response): Response => {
     return res.status(200).json({
         error: false,
         message: "This is my backend for user management using TypeScript"
     });
 })
+
+app.use('/api/v1', userRoute)
 
 // Start the server
 app.listen(port, () => {
